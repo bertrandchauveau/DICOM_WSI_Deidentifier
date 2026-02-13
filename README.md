@@ -52,7 +52,7 @@ The solution has been tested in these situations:
 The arguments, to be defined through Tkinter user interface are:
 - path_to_WSI: the path to the folder containing the sensitive DICOM WSI (as folders or zip)
 - path_output: the path where the deidentified WSI will be saved
-- path to CSV file: an optional CSV file (separator ";") matching original sample reference (or WSI name) with the desired deidentified reference and WSI name. The header of the columns should be "Original WSI name" and "Original ID"
+- path to CSV file: an optional CSV file (separator ";") matching original sample reference (or WSI name) with the desired deidentified reference and WSI name. The header of the columns should be: "Original WSI name", "Original ID" and "Deidentified ID". See also the provided template.
 - secret key: a string secret key to ensure reproducibility in terms of (i) acquisition date shift (+/- 6 months), (ii) modifications of the DICOM Unique Identifiers (UID) and (iii) modification of the sample identifier and file name.
 - identifier of reference: whether the deidentified WSI name and sample reference should be based on the original sample identifier or WSI name
 - annotations: whether annotations files should be maintained during the process. Default to False. Beware that maintaining the annotation files is against the DICOM basic application level confidentiality profile. You should be sure that the graphic element and associated text of the annotation do not contain sensitive information.
