@@ -6,7 +6,7 @@ This work is currently under review in a scientific journal. The link to the jou
 
 Pathology Departments in their digitization transition are encouraged to adopt the Digital Imaging and Communications in Medicine (DICOM) format for routine diagnosis, leading to a major increase of histopathological image-based research projects using this format. Still, DICOM for whole slide images (WSI) remains an emerging file format, with limited tools currently available for deidentification without coding skills. This project aimed to build an easy-to-use and no-code tool to deidentify DICOM WSI, with feedback on the deidentification process.
 
-Here is proposed a Python-based solution to deidentify DICOM WSI in conformance to the DICOM basic application level confidentiality profile (for more information, see https://dicom.nema.org/medical/dicom/current/output/chtml/part15/chapter_e.html).
+This is a Python-based solution to deidentify DICOM WSI in conformance to the DICOM basic application level confidentiality profile (for more information, see https://dicom.nema.org/medical/dicom/current/output/chtml/part15/chapter_e.html).
 
 The solution is provided in 3 ways: 
 - a Colab-compatible jupyter notebook for easy testing
@@ -24,7 +24,7 @@ The main dependencies used are:
 - qrcode 8.2
 - NumPy 1.24.4 
 
-The Windows executable was tested on either a Windows 10 Professional 22H2 and a Windows 11 Professional 24H2. The MacOS executable was tested on MacOS Sequoia 15.7.3.
+The Windows executable was tested on either a Windows 10 Professional 22H2 and a Windows 11 Professional 24H2. The MacOS executable was tested on MacOS Sequoia 15.7.4.
 
 The deidentification process creates from scratch the deidentified WSI (no modification of original files) and includes several steps: (i) the removal of the macro/overview image, which includes the label for some scanners, (ii) the removal of the original label, replaced by a QR code image of the deidentified sample ID, (iii) the removal or modifications of the DICOM metadata in all files, and (iv) the addition of three DICOM tags qualifying the deidentification of each file: “patient identity removed”, “deidentification method” and “longitudinal temporal information modified”.
 
@@ -78,5 +78,19 @@ The arguments, to be defined through Tkinter user interface are:
 - running the .exe file will launch a command prompt and, a few seconds later, another window to select the arguments for the deidentification process. You should point out the folder where the native DICOM files are (.../native_folder). It is not expected that the selected folder contains other files or folder types.
 - A window "Deidentification completed" appears at the end of the process. The command prompt can be closed, after verifying possible warning messages for specific WSI. Deidentified WSI are stored at the defined path_output.
 
+## Security best practices & key management
+
+The secret key is the one of the most critical component of this tool.
+- key strength: do not use simple or short keys (e.g., "12345"). Use a strong, random string of at least 12 characters containing uppercase letters, numbers, and symbols.
+- secure storage: never store your secret key in the same folder as your correspondence CSV. Access to both makes it more likely to restore sensitive information.
+- key loss: if the key is lost (and the CSV files), you cannot link de-identified files to previously processed ones.
+- consistency: make sure to use the same key when processing different parts of the same longitudinal study to maintain temporal relationships between slides.
+
 ## Versions
 Latest version: _01022026
+
+## Related projects
+Other efforts related to anonimyzing medical images include:
+- imageDePHI and WSI DeID: workflows built onto the Digital Slide Archive for redacting medical images.
+- dicom-anonymizer: a python tool for anonymizing DICOM files
+
