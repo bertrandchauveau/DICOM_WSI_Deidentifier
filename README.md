@@ -97,7 +97,7 @@ Previous versions:
 _01022026: app launch
 
 ## Related projects
-Other efforts related to anonimyzing medical images include:
+Other efforts related to deidentifying medical images include:
 - [imageDePHI](https://github.com/DigitalSlideArchive/ImageDePHI) and [WSI DeID](https://github.com/DigitalSlideArchive/DSA-WSI-DeID): workflows built onto the Digital Slide Archive for redacting medical images.
 - [dicom-anonymizer](https://github.com/KitwareMedical/dicom-anonymizer): a python tool for deidentifying DICOM files
 - [TIO-IKIM medical_image_deidentification](https://github.com/TIO-IKIM/medical_image_deidentification): a python tool for deidentifying DICOM files from radiology and histology (WSI)
