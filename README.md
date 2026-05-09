@@ -88,8 +88,10 @@ The secret key is the one of the most critical component of this tool.
 
 ## Versions
 Latest version: _09052026
-Key changes:
 
+Key changes:
+- Added random secure key by default and criteria to define a strong key
+- Modified column name in template (WSI name => Original WSI name) and corresponding handling to match the output correspondence CSV file
 
 Previous versions: 
 _01022026: app launch
