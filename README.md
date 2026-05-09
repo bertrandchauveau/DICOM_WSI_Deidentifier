@@ -52,7 +52,7 @@ The solution has been tested in these situations:
 The arguments, to be defined through Tkinter user interface are:
 - path_to_WSI: the path to the folder containing the sensitive DICOM WSI (as folders or zip)
 - path_output: the path where the deidentified WSI will be saved
-- path to CSV file: an optional CSV file (separator ";") matching original sample reference (or WSI name) with the desired deidentified reference and WSI name. The header of the columns should be: "WSI name", "Original ID" and "Deidentified ID". See also the provided template.
+- path to CSV file: an optional CSV file (separator ";") matching original sample reference (or WSI name) with the desired deidentified reference and WSI name. The header of the columns should be: "Original WSI name", "Original ID" and "Deidentified ID". See also the provided template.
 - secret key: a string secret key to ensure reproducibility in terms of (i) acquisition date shift (+/- 6 months), (ii) modifications of the DICOM Unique Identifiers (UID) and (iii) modification of the sample identifier and file name.
 - identifier of reference: whether the deidentified WSI name and sample reference should be based on the original sample identifier or WSI name
 - annotations: whether annotations files should be maintained during the process. Default to False. Beware that maintaining the annotation files is against the DICOM basic application level confidentiality profile. You should be sure that the graphic element and associated text of the annotation do not contain sensitive information.
@@ -62,7 +62,7 @@ The arguments, to be defined through Tkinter user interface are:
 ## Usage (Python script):
 - considering a Python environment with the required dependencies:
   
-```python /path_to/DICOM_WSI_Deidentifier_01022026.py```
+```python /path_to/DICOM_WSI_Deidentifier.py```
 
 ## Installation instructions and usage (Windows or MacOS executable):
 - end-users must seek the validation of their information technology service management before using the application on an institutional device and only use DICOM originating from a trusted source
@@ -87,10 +87,16 @@ The secret key is the one of the most critical component of this tool.
 - consistency: make sure to use the same key when processing different parts of the same longitudinal study to maintain temporal relationships between slides.
 
 ## Versions
-Latest version: _01022026
+Latest version: _09052026
+Key changes:
+
+
+Previous versions: 
+_01022026: app launch
 
 ## Related projects
 Other efforts related to anonimyzing medical images include:
-- imageDePHI and WSI DeID: workflows built onto the Digital Slide Archive for redacting medical images.
-- dicom-anonymizer: a python tool for anonymizing DICOM files
+- [imageDePHI](https://github.com/DigitalSlideArchive/ImageDePHI) and [WSI DeID](https://github.com/DigitalSlideArchive/DSA-WSI-DeID): workflows built onto the Digital Slide Archive for redacting medical images.
+- [dicom-anonymizer](https://github.com/KitwareMedical/dicom-anonymizer): a python tool for deidentifying DICOM files
+- [TIO-IKIM medical_image_deidentification](https://github.com/TIO-IKIM/medical_image_deidentification): a python tool for deidentifying DICOM files from radiology and histology (WSI)
 
