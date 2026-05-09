@@ -1,5 +1,4 @@
 
-
 import os
 import shutil
 import numpy as np
@@ -24,6 +23,70 @@ import pandas as pd
 from time import gmtime, strftime
 from datetime import datetime, timedelta
 import sys
+import secrets
+import string
+
+def generate_key():
+    # 1. Define all character sets
+    symbols = "!@#$%^&*()_-+={[}]:;<,>.?"
+    uppercase = string.ascii_uppercase
+    lowercase = string.ascii_lowercase
+    digits = string.digits
+    
+    # The full pool for random selection
+    alphabet = uppercase + lowercase + digits + symbols
+    
+    # 2. Determine a random length between 12 and 19
+    length = secrets.choice(range(12, 20))
+    
+    # 3. Ensure "Guaranteed Complexity"
+    # We pick one from each mandatory category first
+    password_parts = [
+        secrets.choice(uppercase),  # Requirement: At least one uppercase
+        secrets.choice(lowercase),  # Requirement: At least one lowercase
+        secrets.choice(digits),     # Requirement: At least one digit
+        secrets.choice(symbols)     # Requirement: At least one symbol
+    ]
+    
+    # 4. Fill the rest of the length with random choices from the full alphabet
+    for _ in range(length - len(password_parts)):
+        password_parts.append(secrets.choice(alphabet))
+    
+    # 5. Shuffle the parts so the mandatory characters aren't always at the start
+    # We use SystemRandom to maintain cryptographic security during the shuffle
+    secrets.SystemRandom().shuffle(password_parts)
+    
+    return ''.join(password_parts)
+
+
+def is_strong_key(password):
+    #Validates if a password meets the following criteria:
+    #- At least 12 characters long
+    #- Contains at least one uppercase letter
+    #- Contains at least one digit
+    #- Contains at least one symbol
+
+    # Define the set of symbols we are looking for (from your original list)
+    symbols = "!@#$%^&*()_-+={[}]:;<,>.?"
+
+    # 1. Check length
+    if len(password) < 12:
+        return False
+
+    # 2. Check for uppercase letter
+    # any() returns True as soon as it finds one character that matches the condition
+    has_upper = any(char.isupper() for char in password)
+    
+    # 3. Check for digit
+    has_digit = any(char.isdigit() for char in password)
+    
+    # 4. Check for symbol
+    # We check if the character exists within our 'symbols' string
+    has_symbol = any(char in symbols for char in password)
+
+    # Return True only if all conditions are met
+    return has_upper and has_digit and has_symbol
+
 
 #Keyed Hashing (HMAC)
 def anonymize_id(original_id, key):
@@ -48,7 +111,7 @@ def get_filename_no_ext(path):
             filename_noext_list.append(filename)
     return filename_noext_list
 
-def define_barcode_value(ds_native, WSI_name, SECRET_KEY_str='12345678910', correspondence_dict=None, correspondence_option=None):
+def define_barcode_value(ds_native, WSI_name, SECRET_KEY_str, correspondence_dict=None, correspondence_option=None):
 
     #SECRET KEY (Must be kept secret and consistent across all runs)
     SECRET_KEY = SECRET_KEY_str.encode('utf-8')
@@ -74,12 +137,12 @@ def define_barcode_value(ds_native, WSI_name, SECRET_KEY_str='12345678910', corr
             #barcode_value = ds_native.PatientID 
     #create an ANONYMISATION ID or use the correspondence dict
     try: #try to use correspondence dict
-        if correspondence_option=="WSI name": 
+        if correspondence_option=="Original WSI name": 
             barcode_value = correspondence_dict[WSI_name]
         else:
             barcode_value = correspondence_dict[reference_ID] #default to reference ID
     except: #by Keyed Hashing
-        if correspondence_option=="WSI name": 
+        if correspondence_option=="Original WSI name": 
             barcode_value = anonymize_id(WSI_name, SECRET_KEY)
         else:
             barcode_value = anonymize_id(reference_ID, SECRET_KEY) #default to reference ID   
@@ -237,7 +300,7 @@ def anonymize_WSI_dcm_file(ds_native, barcode_value, path_output, num_dcm, curre
     ds.PatientBirthDate = ''
     ds.PatientSex = 'O'
     ds.PatientIdentityRemoved = 'YES'
-    ds.DeidentificationMethod = 'DICOM_WSI_Deidentifier_01022026'
+    ds.DeidentificationMethod = 'DICOM_WSI_Deidentifier_09052026'
     ds.DeviceSerialNumber = 'anonymous'
     ds.StudyInstanceUID = generate_uid(entropy_srcs=[str(ds_native.StudyInstanceUID)])
     ds.SeriesInstanceUID = generate_uid(entropy_srcs=[str(ds_native.SeriesInstanceUID)])
@@ -519,7 +582,7 @@ def anonymize_annotation_dcm_file(ds_native, barcode_value, path_output, num_dcm
     ds.PatientBirthDate = ''
     ds.PatientSex = 'O'
     ds.PatientIdentityRemoved = 'YES'
-    ds.DeidentificationMethod = 'DICOM_WSI_Deidentifier_01022026'
+    ds.DeidentificationMethod = 'DICOM_WSI_Deidentifier_09052026'
     ds.SeriesInstanceUID = generate_uid(entropy_srcs=[str(ds_native.SeriesInstanceUID)])
     ds.SeriesNumber = None
     ds.ContentCreatorName = ''
@@ -611,7 +674,7 @@ def anonymize_annotation_dcm_file(ds_native, barcode_value, path_output, num_dcm
             f.write(ds_print)
     
     
-def anonymize_DICOM_WSI(path_to_dcm, WSI_name, path_output, current_date_time, SECRET_KEY_str='12345678910', correspondence_dict=None, correspondence_option=None, annotations=False, txt_file=True, long_temp_inf=False):
+def anonymize_DICOM_WSI(path_to_dcm, WSI_name, path_output, current_date_time, SECRET_KEY_str, correspondence_dict=None, correspondence_option=None, annotations=False, txt_file=True, long_temp_inf=False):
     #long_temp_inf longitudinal temporal information
     
     #identify all dcm files
@@ -677,7 +740,7 @@ def anonymize_DICOM_WSI(path_to_dcm, WSI_name, path_output, current_date_time, S
     return ', '.join(barcode_value),  ', '.join(reference_ID) #the one barcode_value if one, multiple if detected so
 
     
-def batch_DICOM_WSI_anonymization(path_to_WSI, path_output, current_date_time, SECRET_KEY_str='12345678910', correspondence_dict=None, correspondence_option=None, annotations=False, txt_file=True, long_temp_inf=False):
+def batch_DICOM_WSI_anonymization(path_to_WSI, path_output, current_date_time, SECRET_KEY_str, correspondence_dict=None, correspondence_option=None, annotations=False, txt_file=True, long_temp_inf=False):
     WSI_zip_list = [f for f in os.listdir(path_to_WSI) if f.endswith('.zip')]
     #unzip if needed
     if len(WSI_zip_list) > 0:
@@ -792,7 +855,10 @@ def main():
         if not os.path.isdir(path_output):
             messagebox.showerror("Error", "Invalid folder path for deidentified/output WSI")
             return
-
+        if not is_strong_key(SECRET_KEY_str):
+            messagebox.showerror("Error", "Please provide a strong key: \n- At least 12 characters long \n- Contains at least one uppercase letter \n- Contains at least one digit \n- Contains at least one symbol")
+            return   
+    
         # Close the window before running the conversion
         window.destroy()
 
@@ -844,7 +910,9 @@ def main():
     path_entry3.grid(row=2, column=1, padx=10, pady=10)
     tk.Button(window, text="Browse...", command=select_file).grid(row=2, column=2, padx=10, pady=10)
 
-    text_var = tk.StringVar(value="Enter a secret key here")
+    #create a default key
+    my_key = generate_key()
+    text_var = tk.StringVar(value=f"{my_key}")
     tk.Label(window, text="Enter a secret key (keep it for reproducible results):").grid(row=3, column=0, sticky="w", padx=10, pady=5)
     text_entry = tk.Entry(window, textvariable=text_var, width=30)
     text_entry.grid(row=3, column=1, padx=10, pady=5)
@@ -852,7 +920,7 @@ def main():
     id_choice_var = tk.StringVar(value="Reference ID")
     tk.Label(window, text="Select the ID which will be used as reference:").grid(row=4, column=0, sticky="w", padx=10, pady=5)
     tk.Radiobutton(window, text="WSI name/folder name", variable=id_choice_var, 
-                   value="WSI name").grid(row=4, column=1, sticky="w")
+                   value="Original WSI name").grid(row=4, column=1, sticky="w")
     tk.Radiobutton(window, text="Sample ID (within DICOM metadata)", variable=id_choice_var, 
                    value="Original ID").grid(row=5, column=1, sticky="w")
     
@@ -876,6 +944,6 @@ if __name__ == '__main__':
     main()
 
 #Bertrand Chauveau
-#February 2026
+#May 2026
 #University of Bordeaux
 
