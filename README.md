@@ -66,12 +66,7 @@ The arguments, to be defined through Tkinter user interface are:
 
 ## Installation instructions and usage (Windows or MacOS executable):
 - end-users must seek the validation of their information technology service management before using the application on an institutional device and only use DICOM originating from a trusted source
-- download the DICOMtoSVS.zip file at:
-
-  => Windows: pending
-  
-  => MacOS: pending
-  
+- download the DICOMtoSVS.zip file corresponding to your operating system (see GitHub releases)
 - decompress the file in your local disk, ending up with a DICOM_WSI_Deidentifier_XX folder containing a "DICOM_WSI_Deidentifier_XX.exe" file and a "_internal" folder, containing required files to run the executable. Do not separate the "_internal" folder from the exe file. 
 - optional: create a desktop shortcut of the .exe file (right-clik, create shortcut)
 - when running the .exe file for the first time, Windows will display a warning message "unknown publisher". This is an expected behavior from Windows.
@@ -87,7 +82,7 @@ The secret key is the one of the most critical component of this tool.
 - consistency: make sure to use the same key when processing different parts of the same longitudinal study to maintain temporal relationships between slides.
 
 ## Versions
-Latest version: _09052026
+Latest version: v.2026.05.09
 
 Key changes:
 - Added random secure key by default and criteria to define a strong key
