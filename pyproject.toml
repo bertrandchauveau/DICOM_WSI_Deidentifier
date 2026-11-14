@@ -1,0 +1,39 @@
+[project]
+name = "dicom-wsi-deidentifier"
+version = "2.0.0"
+description = "Deidentification of DICOM whole slide images for histopathology"
+readme = "README.md"
+authors = [{ name = "Bertrand Chauveau" }]
+# flet build bundles the highest supported Python matching this range -> CPython 3.12.
+# Do not widen it to 3.13/3.14 without bumping numpy/pandas/pillow (no wheels for the pinned versions).
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "flet==1.1.1",
+  "pydicom==3.0.2",
+  "numpy==2.1.1",     # 1.26.4/1.24.4 has no wheels for Python 3.12
+  "pandas>=2.2,<3",
+  "pillow==11.3.0",
+  "qrcode==8.2",
+  "natsort==8.4.0",
+]
+
+[dependency-groups]
+dev = ["flet[all]==1.1.1"]   # flet CLI + desktop client for `flet run` / `flet build`
+
+[tool.flet]
+org = "fr.u-bordeaux"
+product = "DICOM WSI Deidentifier"
+artifact = "DICOM WSI Deidentifier"   # name of the .exe / .app (default would be the project name)
+company = "University of Bordeaux"
+copyright = "Copyright (C) 2026 Bertrand Chauveau, University of Bordeaux"
+
+[tool.flet.app]
+path = "src"
+module = "main"
+
+#[tool.flet.macos]     # or [tool.flet]
+#target_arch = ["arm64"] #not"x86_64"
+# macOS: defaults are fine (no sandbox, read/write access to user-selected folders).
+# Example override if ever needed:
+# [tool.flet.macos.entitlement]
+# "com.apple.security.files.user-selected.read-write" = true
