@@ -114,14 +114,18 @@ The secret key is the one of the most critical component of this tool.
 
 ## Versions
 
-Latest version: 2.0.0
+Latest version: 2.0.1
+Key changes:
+- update app version in the DeidentificationMethod DICOM tag
+
+Previous versions: 
+2.0.0
 Key changes:
 - move from tkinter/pyinstaller to Flet-based application and user interface
 - ensure uid generation actually uses the secret_key for reproducible results
-- update dependencies: pydicom 2.4.4 => 3.0.2; pillow 10.4.0 => 11.3.0; numpy 1.24.4 => 2.1.1
+- update dependencies: pydicom 2.4.4 => 3.0.2; pillow 10.4.0 => 11.3.0; numpy 1.24.4 => 1.26.4
 - versioning system changed
 
-Previous versions: 
 v.2026.05.09:
 - Added random secure key by default and criteria to define a strong key
 - Modified column name in template (WSI name => Original WSI name) and corresponding handling to match the output correspondence CSV file
