@@ -1,6 +1,6 @@
 [project]
 name = "dicom-wsi-deidentifier"
-version = "2.0.0"
+version = "2.0.1"
 description = "Deidentification of DICOM whole slide images for histopathology"
 readme = "README.md"
 authors = [{ name = "Bertrand Chauveau" }]
