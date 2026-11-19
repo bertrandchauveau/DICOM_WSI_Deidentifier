@@ -123,7 +123,7 @@ Previous versions:
 Key changes:
 - move from tkinter/pyinstaller to Flet-based application and user interface
 - ensure uid generation actually uses the secret_key for reproducible results
-- update dependencies: pydicom 2.4.4 => 3.0.2; pillow 10.4.0 => 11.3.0; numpy 1.24.4 => 1.26.4
+- update dependencies: pydicom 2.4.4 => 3.0.2; pillow 10.4.0 => 11.3.0; numpy 1.24.4 => 2.1.1
 - versioning system changed
 
 v.2026.05.09:
