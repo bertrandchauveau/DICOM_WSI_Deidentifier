@@ -311,7 +311,7 @@ def anonymize_WSI_dcm_file(ds_native, barcode_value, path_output, num_dcm, curre
     ds.PatientBirthDate = ''
     ds.PatientSex = 'O'
     ds.PatientIdentityRemoved = 'YES'
-    ds.DeidentificationMethod = 'DICOM_WSI_Deidentifier_09052026'
+    ds.DeidentificationMethod = 'DICOM_WSI_Deidentifier_2.0.1'
     ds.DeviceSerialNumber = 'anonymous'
     ds.StudyInstanceUID = generate_uid(entropy_srcs=[SECRET_KEY_str, str(ds_native.StudyInstanceUID)])
     ds.SeriesInstanceUID = generate_uid(entropy_srcs=[SECRET_KEY_str, str(ds_native.SeriesInstanceUID)])
@@ -593,7 +593,7 @@ def anonymize_annotation_dcm_file(ds_native, barcode_value, path_output, num_dcm
     ds.PatientBirthDate = ''
     ds.PatientSex = 'O'
     ds.PatientIdentityRemoved = 'YES'
-    ds.DeidentificationMethod = 'DICOM_WSI_Deidentifier_09052026'
+    ds.DeidentificationMethod = 'DICOM_WSI_Deidentifier_2.0.1'
     ds.SeriesInstanceUID = generate_uid(entropy_srcs=[SECRET_KEY_str, str(ds_native.SeriesInstanceUID)])
     ds.SeriesNumber = None
     ds.ContentCreatorName = ''
